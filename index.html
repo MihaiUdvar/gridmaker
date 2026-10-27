@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+  <title>GridMaker</title>
+  <meta name="description" content="Photo collage and grid maker that works offline. Exports 16 megapixel images.">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#f3f4f6" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0b0b0d" media="(prefers-color-scheme: dark)">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="GridMaker">
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="apple-touch-icon" href="./icons/icon-180.png">
+  <link rel="icon" href="./icons/icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <h1>GridMaker</h1>
+    <div class="topbar-actions">
+      <label class="btn primary" for="file-input" id="add-label">Add photos</label>
+      <input id="file-input" class="visually-hidden" type="file" accept="image/*,image/heic,image/heif,.heic,.heif,.jpg,.jpeg,.png,.webp" multiple>
+    </div>
+  </header>
+
+  <main class="stage" id="stage">
+    <canvas id="preview" aria-label="Collage preview"></canvas>
+    <div class="empty" id="empty">
+      <div class="empty-card">
+        <p><strong>Pick 2–9 photos</strong> to start.</p>
+        <p class="muted">Tap a cell to select it. Pinch to zoom, drag to pan. Long-press and drag a photo onto another cell to swap. Double-tap to reset.</p>
+        <label class="btn primary" for="file-input">Add photos</label>
+      </div>
+    </div>
+  </main>
+
+  <section class="panel" id="panel">
+    <div class="group" id="photos-group">
+      <div class="group-head">
+        <span>Photos <span class="muted" id="photo-count"></span></span>
+        <button class="link" id="clear-btn" type="button">Clear all</button>
+      </div>
+      <div class="thumbs" id="thumbs"></div>
+    </div>
+
+    <div class="group">
+      <div class="group-head"><span>Aspect ratio</span></div>
+      <div class="chips" id="aspect-chips" role="radiogroup" aria-label="Aspect ratio"></div>
+    </div>
+
+    <div class="group">
+      <div class="group-head"><span>Layout</span><span class="muted" id="preset-name"></span></div>
+      <div class="chips presets" id="preset-chips" role="radiogroup" aria-label="Layout"></div>
+    </div>
+
+    <div class="group">
+      <div class="group-head"><span>Style</span></div>
+      <label class="slider">
+        <span>Gap</span>
+        <input type="range" id="gap" min="0" max="40" step="1" value="8">
+        <output id="gap-out">8 px</output>
+      </label>
+      <label class="slider">
+        <span>Margin</span>
+        <input type="range" id="margin" min="0" max="40" step="1" value="0">
+        <output id="margin-out">0 px</output>
+      </label>
+      <label class="slider">
+        <span>Corners</span>
+        <input type="range" id="radius" min="0" max="40" step="1" value="0">
+        <output id="radius-out">0 px</output>
+      </label>
+      <div class="chips" id="bg-chips" aria-label="Background">
+        <button type="button" class="chip swatch" data-bg="#ffffff"><span class="dot" style="background:#fff"></span>White</button>
+        <button type="button" class="chip swatch" data-bg="#000000"><span class="dot" style="background:#000"></span>Black</button>
+        <label class="chip swatch" id="custom-bg-chip">
+          <span class="dot" id="custom-dot"></span>Custom
+          <input type="color" id="bg-color" value="#f2e8d5" aria-label="Custom background color">
+        </label>
+      </div>
+    </div>
+
+    <div class="group">
+      <div class="group-head"><span>Export</span><span class="muted" id="export-dims"></span></div>
+      <div class="row">
+        <select id="format" aria-label="Export format">
+          <option value="image/jpeg">JPEG (quality 0.92)</option>
+          <option value="image/png">PNG</option>
+        </select>
+        <button type="button" class="btn primary grow" id="export-btn">Export 16 MP</button>
+      </div>
+      <div class="status muted" id="export-status"></div>
+      <div class="result hidden" id="export-result">
+        <div class="result-info" id="export-info"></div>
+        <button type="button" class="btn primary" id="save-btn">Save to Photos…</button>
+        <div class="muted small" id="save-hint"></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script type="module" src="./app.js"></script>
+</body>
+</html>
